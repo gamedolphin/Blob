@@ -66,10 +66,6 @@ BasicSim.prototype.setUpInput = function(){
 };
 
 
-BasicSim.prototype.setUpText = function(){
-
-};
-
 BasicSim.prototype.setUpForces = function(){
 
 	this.forceControl = new FORCES();
