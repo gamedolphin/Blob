@@ -11,8 +11,8 @@ BasicSim = function(game){
 BasicSim.prototype.setUpControls = function(){
 
 	this.colorSet = [0xFCE94F,0xFCAF3E,0xE9B96E,0x8AE234,0x729FCF,0xAD7FA8,0xEF2929]; //Tango palette
-	this.totalCircles = 100;
-	this.radiusRange = { min : 8, max : 16 };
+	this.totalCircles = 200;
+	this.radiusRange = { min : 4, max : 8 };
 	this.attractionStrength = 2000;
 	this.repulsionStrength = 400000;
 
@@ -125,7 +125,7 @@ BasicSim.prototype.createCircle = function(data){
 
 BasicSim.prototype.setUpScreen = function(){
 
-	this.stage.backgroundColor = 'EEEEEC';
+	this.stage.backgroundColor = 'EEEEEC'; //FFFFFF
 	this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
     this.scale.pageAlignHorizontally = true;
     this.scale.pageAlignVertically = true;
