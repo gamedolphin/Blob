@@ -1,0 +1,25 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Attraction Repulsion - GAME DOLPHIN</title>
+        <script src="Forces.js"></script>
+        <script src="phaser.min.js"></script>
+        <script src="Boot.js"></script>
+    </head>
+    <body style="margin:0px;">
+    <script type="text/javascript">
+
+    window.onload = function() {
+
+        var game = new Phaser.Game(window.innerWidth*window.devicePixelRatio, window.innerHeight*window.devicePixelRatio, Phaser.CANVAS, '');
+        game.state.add('BasicSim', BasicSim,true);
+
+        game.state.start('BasicSim');
+
+    };
+
+    </script>
+
+    </body>
+</html>
