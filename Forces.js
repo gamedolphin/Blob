@@ -9,6 +9,7 @@ FORCES = function(){
 FORCES.prototype.constructor = FORCES;
 
 FORCES.prototype.attract = function(id,attractor,strength,radius){
+	//pre-defined force object to be stored in the forceList array.
 	return {
 		id : id,
 		attractor : attractor,
@@ -44,6 +45,7 @@ FORCES.prototype.attract = function(id,attractor,strength,radius){
 };
 
 FORCES.prototype.distanceAttract = function(id,attractor,strength,radius){
+	//pre-defined faux gravity force
 	return {
 		id : id,
 		attractor : attractor,
@@ -63,12 +65,12 @@ FORCES.prototype.distanceAttract = function(id,attractor,strength,radius){
 			this.tempY = this.attractor.y - a.y;
 			this.angle = Math.atan2(this.tempY, this.tempX);
 			this.dist = Math.sqrt(this.tempX*this.tempX+this.tempY*this.tempY);
-			if(this.dist<40)
+			if(this.dist<40)	//ensure no divide by zeroes :P
 				this.dist = 40;
 			if(this.radius>0){
 				if(this.dist<this.radius)
-					this.fX += this.strength*Math.cos(this.angle)/this.dist;
-					this.fY += this.strength*Math.sin(this.angle)/this.dist;
+					this.fX += this.strength*Math.cos(this.angle)/this.dist; 	// :O only dist and not dist^2?!?
+					this.fY += this.strength*Math.sin(this.angle)/this.dist;	// yeah, looks fine to me
 			}
 			else{					
 				this.fX += this.strength*Math.cos(this.angle)/this.dist;
