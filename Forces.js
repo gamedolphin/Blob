@@ -1,5 +1,8 @@
 FORCES = function(){
 	this.forceList = [];
+	this.tempForceX = 0;
+	this.tempForceY = 0;
+	this.tempForce = null;
 };
 
 
@@ -11,20 +14,31 @@ FORCES.prototype.attract = function(id,attractor,strength,radius){
 		attractor : attractor,
 		strength : strength,
 		radius : radius,
+		fX : 0,
+		fY : 0,
+		angle : 0,
+		dist : 1,
+		tempX : 0,
+		tempY : 0,
+		returnObject : { x : 0, y : 0},
 		applyForce : function(a){
-			var fX=0, fY=0;
-			var angle = Math.atan2(attractor.y - a.y, attractor.x - a.x);
+			this.fX=0;
+			this.fY=0;
+			this.tempX = this.attractor.x - a.x;
+			this.tempY = this.attractor.y - a.y;
+			this.angle = Math.atan2(this.tempY, this.tempX);
 			if(this.radius>0){
-				if(Math.sqrt((attractor.x-a.x)*(attractor.x-a.x)+(attractor.y-a.y)*(attractor.y-a.y)<this.radius)){
-					fX += this.strength*Math.cos(angle);
-					fY += this.strength*Math.sin(angle);
+				if(Math.sqrt(this.tempX*this.tempX+this.tempY*this.tempY<this.radius)){
+					this.fX += this.strength*Math.cos(this.angle);
+					this.fY += this.strength*Math.sin(this.angle);
 				}
 			}
 			else{
-				fX += this.strength*Math.cos(angle);
-				fY += this.strength*Math.sin(angle);
+				this.fX += this.strength*Math.cos(this.angle);
+				this.fY += this.strength*Math.sin(this.angle);
 			}
-			return { x : fX, y: fY };
+			this.returnObject.x = this.fX; this.returnObject.y = this.fY;
+			return this.returnObject;
 		}
 	}
 };
@@ -37,23 +51,31 @@ FORCES.prototype.distanceAttract = function(id,attractor,strength,radius){
 		radius : radius,
 		fX : 0,
 		fY : 0,
+		angle : 0,
+		dist : 1,
+		tempX : 0,
+		tempY : 0,
+		returnObject : { x : 0, y : 0},
 		applyForce : function(a){
 			this.fX=0;
 			this.fY=0;
-			var angle = Math.atan2(attractor.y - a.y, attractor.x - a.x);
-			var dist = Math.sqrt((attractor.x-a.x)*(attractor.x-a.x)+(attractor.y-a.y)*(attractor.y-a.y))
-			if(dist<40)
-				dist = 40;
+			this.tempX = this.attractor.x - a.x;
+			this.tempY = this.attractor.y - a.y;
+			this.angle = Math.atan2(this.tempY, this.tempX);
+			this.dist = Math.sqrt(this.tempX*this.tempX+this.tempY*this.tempY);
+			if(this.dist<40)
+				this.dist = 40;
 			if(this.radius>0){
-				if(dist<this.radius)
-					fX += this.strength*Math.cos(angle)/dist;
-					fY += this.strength*Math.sin(angle)/dist;
+				if(this.dist<this.radius)
+					this.fX += this.strength*Math.cos(this.angle)/this.dist;
+					this.fY += this.strength*Math.sin(this.angle)/this.dist;
 			}
 			else{					
-				fX += this.strength*Math.cos(angle)/dist;
-				fY += this.strength*Math.sin(angle)/dist;
+				this.fX += this.strength*Math.cos(this.angle)/this.dist;
+				this.fY += this.strength*Math.sin(this.angle)/this.dist;
 			}
-			return { x : fX, y: fY };
+			this.returnObject.x = this.fX; this.returnObject.y = this.fY;
+			return this.returnObject;
 		}
 	}
 };
@@ -63,14 +85,14 @@ FORCES.prototype.addForce = function(f){
 };
 
 FORCES.prototype.applyForces = function(a){
-	var f, fX=0, fY=0;
+	this.tempForceX = 0; this.tempForceY = 0;
 	for(var i=0;i<this.forceList.length;i++){
-		f = this.forceList[i].applyForce(a);
-		fX += f.x;
-		fY += f.y;
+		this.tempForce = this.forceList[i].applyForce(a);
+		this.tempForceX += this.tempForce.x;
+		this.tempForceY += this.tempForce.y;
 	}
-	a.body.force.x = fX;
-	a.body.force.y = fY;
+	a.body.force.x = this.tempForceX;
+	a.body.force.y = this.tempForceY;
 };
 
 FORCES.prototype.removeForce = function(id){
